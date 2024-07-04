@@ -11,6 +11,8 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements FilamentUser
@@ -37,11 +39,13 @@ class User extends Authenticatable implements FilamentUser
         return $this->can('view-admin', User::class);
     }
 
-    public function isAdmin(){
+    public function isAdmin(): bool
+    {
         return $this->role === self::ROLE_ADMIN;
     }
 
-    public function isEditor(){
+    public function isEditor(): bool
+    {
         return $this->role === self::ROLE_EDITOR;
     }
 
@@ -87,17 +91,28 @@ class User extends Authenticatable implements FilamentUser
         'profile_photo_url',
     ];
 
-    public function likes()
+//return type with generic class Illuminate\Database\Eloquent\Relations\BelongsToMany does not specify its types: TRelatedModel
+   /**
+     * @phpstan-ignore-next-line
+     */
+    public function likes(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'post_like')->withTimestamps();
     }
 
-    public function hasLiked(Post $post)
+
+    public function hasLiked(Post $post): bool
     {
         return $this->likes()->where('post_id', $post->id)->exists();
     }
 
-    public function comments(){
-        return $this->hasMany(Comment::class);
-    }
+// return type with generic class Illuminate\Database\Eloquent\Relations\HasMany does not specify its types: TRelatedModel
+    /**
+     * @phpstan-ignore-next-line
+     */
+     public function comments(): HasMany
+     {
+         return $this->hasMany(Comment::class);
+     }
+
 }
