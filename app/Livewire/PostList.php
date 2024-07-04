@@ -14,6 +14,8 @@ class PostList extends Component
 {
     use WithPagination;
 
+    public $activeCategory;
+
     // blog?pages=1&sort=asc or blog?pages=1&sort=desc
     #[Url()]
     public $sort = 'desc';

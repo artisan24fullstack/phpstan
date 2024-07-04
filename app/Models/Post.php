@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Comment;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
 {
@@ -29,11 +33,11 @@ class Post extends Model
         'published_at' => 'datetime', //Call to a member function diffForHumans() on string
 
     ];
-    public function author(){
-        return $this->belongsTo(User::class, "user_id");
+    public function author():BelongsTo{
+        return $this->belongsTo(User::class);
     }
 
-    public function categories()
+    public function categories():BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
@@ -71,9 +75,16 @@ class Post extends Model
     {
         $query->where('title', 'like', "%{$search}%");
     }
-    public function getExcerpt(){
-        return Str::limit(strip_tags($this->body,150));
+    public function getExcerpt(): string {
+        // First, strip all HTML tags from the body content.
+        $strippedContent = strip_tags($this->body);
+
+        // Then, limit the length of the stripped content.
+        $excerpt = Str::limit($strippedContent, 150); // Limiting to 150 characters
+
+        return $excerpt;
     }
+
     public function getReadingTime(){
         $mins = round(str_word_count($this->body) / 250);
         return ($mins < 1 ) ? 1 : $mins;

@@ -42,7 +42,11 @@ class PostComments extends Component
          *
          * select * from "users" where "users"."id" in (2, 101, 102)
          */
-        return $this?->post->comments()->with('user')->latest()->paginate(5);
+        //return $this?->post->comments()->with('user')->latest()->paginate(5);
+        // phpcs:disable LaravelStan.NullSafeOperatorUsage
+        return $this->post->comments()->with('user')->latest()->paginate(5);
+        // phpcs:enable LaravelStan.NullSafeOperatorUsage
+
     }
 
     public function render()
