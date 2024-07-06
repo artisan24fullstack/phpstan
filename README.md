@@ -1,22 +1,53 @@
 # Larastan
-                                                                                                                        
 
-> A. Return Type with Generic Class Not Specifying Its Types
-- For methods returning relationships, you need to specify the return type correctly. In PHPStan, when dealing with Eloquent relationships, you should use the fully qualified name of the relationship type, including the namespace. 
+## Installation de Larastan
 
-To fix this, you can explicitly declare the return type using the full class name:
+- Utilisez Composer pour ajouter Larastan à votre projet en tant que dépendance de développement 
 
-> Methods Without Return Type Specified
-- PHPStan requires explicit return types for all methods unless they are declared as void. For methods without a return statement, it's best practice to declare them as void:
+```
+composer require larastan/larastan:^2.0 --dev
+```
 
-> Parameters Without Type Specified
-- For parameters in methods, especially those used in scopes, you should specify the expected type. This helps PHPStan understand what kind of data is expected, improving type safety:                                 
-                                                                                                         
- [OK] No errors level: 5                                                                                                    
-                                                                                                                        
+## Configuration de Larastan 
 
-´´´
+- Dans la racine de votre application, créez un fichier phpstan.neon 
+  
+-  Voici un exemple de configuration basique :
+
+```
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+
+    # Level 9 is the highest level
+    level: 5
+
+#    ignoreErrors:
+#        - '#PHPDoc tag @var#'
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php
+#
+#    checkMissingIterableValueType: false
+```
+
+- Cette configuration indique à PHPStan où chercher les fichiers à analyser (paths) et quel niveau d'analyse utiliser (level). 
+
+- Vous pouvez ajuster ces paramètres selon vos besoins.
+
+## Pour analysee le code : 
+
+- Exécutez l'analyse statique sur votre code en utilisant la commande PHPStan :
+
+```
 ./vendor/bin/phpstan analyse
-
+```
+                                                                           
+ > [OK] No errors level: 5                                                                                                    
+                                                                                                                        
 
                   

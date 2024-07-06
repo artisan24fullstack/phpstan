@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Post;
+use App\Models\User;
+
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
 use Livewire\Component;

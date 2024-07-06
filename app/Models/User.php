@@ -91,10 +91,6 @@ class User extends Authenticatable implements FilamentUser
         'profile_photo_url',
     ];
 
-//return type with generic class Illuminate\Database\Eloquent\Relations\BelongsToMany does not specify its types: TRelatedModel
-   /**
-     * @phpstan-ignore-next-line
-     */
     public function likes(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'post_like')->withTimestamps();
@@ -106,10 +102,7 @@ class User extends Authenticatable implements FilamentUser
         return $this->likes()->where('post_id', $post->id)->exists();
     }
 
-// return type with generic class Illuminate\Database\Eloquent\Relations\HasMany does not specify its types: TRelatedModel
-    /**
-     * @phpstan-ignore-next-line
-     */
+
      public function comments(): HasMany
      {
          return $this->hasMany(Comment::class);
